@@ -22,7 +22,7 @@ function App() {
   }
 
   useEffect(() => {
-    findMe();
+    // findMe();
     // console.log({ availProviders });
   }, []);
 
@@ -71,7 +71,7 @@ function App() {
       <div className="Criteria">
         <h2>Where to search</h2>
         <div className="location">
-          Enter your geo location below or click to: <button onClick={findMe}>Auto-Detect</button>
+          Enter your geo location below or click to: <button onClick={findMe}>find me</button>
           {/* <div className="address">
             Address:{" "}
             <input
