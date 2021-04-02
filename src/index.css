@@ -19,16 +19,23 @@
   text-align: left;
   /* font-size: 30px; */
 }
+.Location > div {
+  margin-left: 15px;
+}
 
 .ProviderList,.Criteria,.ProviderDetails {
   background-color: rgb(223, 237, 221);
   /* color: white; */
   margin-left: 5px;
   margin-right: 5px;
-  padding: 5px;
-  border-radius: 5px;
   margin-top: 10px;
   margin-bottom: 10px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.Criteria div {
+  padding-top: 5px;
 }
 
 .AppResults {
@@ -48,6 +55,7 @@
 button {
   background-color: rgb(0, 103, 135);
   color: white;
+  margin-top: 5px;
   margin-left: 5px;
   margin-right: 5px;
   padding: 5px;

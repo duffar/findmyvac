@@ -1,8 +1,38 @@
-# Getting Started with Create React App
+# Find My Vaccine
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A tool to help you locate COVID-19 vaccine appointment openings at nearby pharmacies. The data
+behind this tool comes from https://www.vaccinespotter.org
 
-## Available Scripts
+# Development Setup
+
+Currently this is a front-end only react app so it is very easy to deploy at providers such as Digital Ocean, Netlify, or AWS. Most of those providers can clone and build directly from the repo. 
+
+Requirements:
+- Node.js 14+
+- npm
+
+1. Clone the repo: `git clone https://github.com/duffar/findmyvac.git`
+2. Install dependencies (inside the repo): `npm install`
+3. Run the application in dev mode: `npm start`
+
+At this point the application should be running on localhost:3000. 
+
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
+
+# Using the Application
+Basically just enter the initials of the states you wish to search, the maximum distance away to include, and your current location. Then press 'Find Providers' and the app will locate and display any providers with available appointments - sorted by distance.
+
+The list includes links to the providers url for scheduling an appointment, as well as links to map directions, and additional details about the provider (which may include vaccines offered).
+
+
+# Create React App
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). As such the following information pertains as well.
+
+## Additional Scripts
 
 In the project directory, you can run:
 
@@ -68,4 +98,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# findmyvac
+

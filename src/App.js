@@ -69,9 +69,27 @@ function App() {
     <div className="App">
       <h1>Covid-19 Vaccine Locator</h1>
       <div className="Criteria">
-        <h2>Where to search</h2>
-        <div className="location">
-          Enter your geo location below or click to: <button onClick={findMe}>find me</button>
+        <h2>Where to Search</h2>
+        <div className="States">
+          Initials of nearby states:{" "}
+          <input
+            type="text"
+            name="states"
+            value={inputs.states}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="MaxDistance">
+          Maximum distance away:{" "}
+          <input
+            type="number"
+            name="maxDistance"
+            value={inputs.maxDistance}
+            onChange={handleInputChange}
+          /> miles.
+        </div>
+        <div className="Location">
+          Enter your geo location below or click <button onClick={findMe}>find me</button>
           {/* <div className="address">
             Address:{" "}
             <input
@@ -81,7 +99,7 @@ function App() {
               onChange={handleInputChange}
             />
           </div> */}
-          <div className="lat">
+          <div className="Lat">
             Latitude:{" "}
             <input
               type="text"
@@ -90,7 +108,7 @@ function App() {
               onChange={handleInputChange}
             />
           </div>
-          <div className="lat">
+          <div className="Lon">
             Longitude:{" "}
             <input
               type="text"
@@ -99,24 +117,6 @@ function App() {
               onChange={handleInputChange}
             />
           </div>
-        </div>
-        <div className="states">
-          States to search:{" "}
-          <input
-            type="text"
-            name="states"
-            value={inputs.states}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="maxDistance">
-          Maximum distance:{" "}
-          <input
-            type="number"
-            name="maxDistance"
-            value={inputs.maxDistance}
-            onChange={handleInputChange}
-          /> miles.
         </div>
       </div>
       <div className="FindProviders">
