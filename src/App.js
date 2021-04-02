@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import "./index.css";
 import findProviders from "./vacFinder";
-import findLocation from "./addrFinder";
+// import findLocation from "./addrFinder";
 import geolocation from "geolocation";
 
 function App() {
