@@ -58,10 +58,10 @@ function App() {
   return (
     <div className="App">
       <h1>Covid-19 Vaccine Locator</h1>
-      <h2>Enter your criteria</h2>
       <div className="Criteria">
+        <h2>Where to search</h2>
         <div className="location">
-          Location: <button onClick={findMe}>current</button>
+          Location: <button onClick={findMe}>Auto-Detect</button>
           <div className="lat">
             Lat:{" "}
             <input
@@ -100,11 +100,11 @@ function App() {
           />
         </div>
       </div>
-      <div>
+      <div className="FindProviders">
         <button onClick={findProvidersNow}>Find Providers</button>
       </div>
       <div className="ProviderList">
-        <h2>Providers matching criteria</h2>
+        <h2>Nearby Providers</h2>
         {availProviders.length} Providers in range taking appointments:
         <ul>
           {availProviders.map((item, index) => {
