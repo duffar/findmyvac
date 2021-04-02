@@ -34,7 +34,7 @@ function App() {
   };
 
   const selectProvider = (event) => {
-    setproviderDetails(event.target.title);
+    setproviderDetails(event.target.dataset.text);
   };
 
   function findMe() {
@@ -110,32 +110,30 @@ function App() {
           {availProviders.map((item, index) => {
             const p = item["properties"];
             const loc = item["geometry"]["coordinates"];
+            const text = JSON.stringify(item,' ',2);
             return (
-              <li key={index}>
-                <a href={p["url"]} target="_blank">{`${Math.round(
-                  item.distance
-                )}m, ${p["provider"]}, ${p["city"]}, ${p["state"]}`}</a>
+              <li key={index}>{Math.round(item.distance)}m,{' '}
+                <a href={p["url"]} target="_blank">{p["provider"]}</a>, {p["city"]}, {p["state"]}{' '}
                 <a
                   href={`https://www.google.com/maps/dir/${inputs.homeLat},+${inputs.homeLon}/${loc[1]},+${loc[0]}`}
                   target="blank"
                 >
                   (Map)
                 </a>
-                <span
-                  onClick={selectProvider}
-                  title={JSON.stringify(item, " ", 2)}
-                >
-                  {" "}
-                  (details)
+                {' '}
+                <span title={text}>
+                  <a onClick={selectProvider} href="#ProviderDetails" data-text={text}>
+                    (details)
+                  </a>
                 </span>
               </li>
             );
           })}
         </ul>
       </div>
-      <div className="ProviderDetails">
+      <div id="ProviderDetails" className="ProviderDetails">
         <h2>Provider details</h2>
-        {providerDetails ? <textarea value={providerDetails}></textarea> : ""}
+        {providerDetails ? <textarea value={providerDetails} readOnly></textarea> : ""}
       </div>
     </div>
   );
