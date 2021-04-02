@@ -135,6 +135,9 @@ function App() {
         <h2>Provider details</h2>
         {providerDetails ? <textarea value={providerDetails} readOnly></textarea> : ""}
       </div>
+      <footer>
+        This website is based off data found at <a href="https://www.vaccinespotter.org/" target="_blank">vaccinespotter.org</a>. Many thanks to their generocity in providing the data. 
+      </footer>
     </div>
   );
 }
