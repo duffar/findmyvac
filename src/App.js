@@ -75,6 +75,19 @@ function App() {
     });
   }
 
+  function vaccineList(p) {
+    const list = [];
+    const vacTypes = p["appointment_vaccine_types"];
+    Object.keys(vacTypes).forEach(function(key) {
+      if (!!vacTypes[key]) {
+        list.push(key);
+      } else {
+        list.push('?');
+      }
+    });
+    return list;
+  }
+
   return (
     <div className="App">
       <h1>Covid-19 Vaccine Locator</h1>
@@ -147,7 +160,7 @@ function App() {
             const text = JSON.stringify(item,' ',2);
 
             return (
-              <li key={index}>{Math.round(item.distance)}m, {p["provider"]}, {p["city"]}, {p["state"]+' '}
+              <li key={index}>{Math.round(item.distance)}m - {p["provider"]}, {p["city"]}, {p["state"]}, {p["appointments"].length} openings({vaccineList(p)+'), '}
                 <a href={p["url"]} target="_blank">(Schedule)</a>
                 {' '}
                 <a
