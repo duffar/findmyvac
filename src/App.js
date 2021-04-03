@@ -88,6 +88,14 @@ function App() {
     return list;
   }
 
+  function apptCount(p) {
+    let count = '?';
+    if (p["appointments"] && p["appointments"].length>0) {
+      count = p["appointments"].length;
+    }
+    return count;
+  }
+
   return (
     <div className="App">
       <h1>Covid-19 Vaccine Locator</h1>
@@ -160,7 +168,7 @@ function App() {
             const text = JSON.stringify(item,' ',2);
 
             return (
-              <li key={index}>{Math.round(item.distance)}m - {p["provider"]}, {p["city"]}, {p["state"]}, {p["appointments"].length} openings({vaccineList(p)+'), '}
+              <li key={index}>{Math.round(item.distance)}m - {p["provider"]}, {p["city"]}, {p["state"]}, {apptCount(p)} openings({vaccineList(p)+'), '}
                 <a href={p["url"]} target="_blank">(Schedule)</a>
                 {' '}
                 <a
