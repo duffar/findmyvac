@@ -50,12 +50,8 @@ export default async function findProviders({
       const sdata = await getData(state.trim());
       const availableNearby = sdata.filter((item) => {
         const loc = item["geometry"]["coordinates"];
-        let nearby = false;
-        if (item["properties"]["appointments_available"]) {
-          item.distance = distance(loc[1], loc[0], homeLat, homeLon);
-          nearby = item.distance <= maxDistance;
-        }
-        return nearby;
+        item.distance = distance(loc[1], loc[0], homeLat, homeLon);
+        return item.distance <= maxDistance;
       });
       fdata.push(...availableNearby);
     })

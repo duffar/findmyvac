@@ -12,8 +12,10 @@ function App() {
     homeLon: -92.4802,
     states: "MN,IA,WI,SD", // it'd be great to determine these from the coordinate and maxdistance but this is simple
     maxDistance: 150,
+    requireAppointments: true
   });
   const [availProviders, setAvailProviders] = useState([]);
+  const [visibleProviders, setVisibleProviders] = useState([]);
   const [providerDetails, setproviderDetails] = useState();
 
   async function findProvidersNow() {
@@ -27,18 +29,26 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // console.log({ availProviders });
-  }, [availProviders]);
+    setVisibleProviders(availProviders.filter((item) => item["properties"]["appointments_available"] || !inputs.requireAppointments))
+  }, [availProviders, inputs]);
 
   useEffect(() => {
     // console.log({ inputs });
   }, [inputs]);
 
   const handleInputChange = (event) => {
-    setInputs((inputs) => ({
-      ...inputs,
-      [event.target.name]: event.target.value,
-    }));
+    console.log({event})
+    if (event.target.type === "checkbox") {
+      setInputs((inputs) => ({
+        ...inputs,
+        [event.target.name]: !inputs[event.target.name]
+      }));  
+    } else {
+      setInputs((inputs) => ({
+        ...inputs,
+        [event.target.name]: event.target.value,
+      }));
+    }
   };
 
   const selectProvider = (event) => {
@@ -118,18 +128,24 @@ function App() {
             />
           </div>
         </div>
+        <input type="checkbox" id="requireAppointments" name="requireAppointments" value={true} checked={inputs.requireAppointments} onChange={handleInputChange} />
+        <label for="requireAppointments"> Only show providers currently advertising appointments</label><br></br>
+
       </div>
       <div className="FindProviders">
         <button onClick={findProvidersNow}>Find Providers</button>
       </div>
       <div className="ProviderList">
-        <h2>Nearby Providers</h2>
-        {availProviders.length} Providers in range taking appointments:
+        <span>
+          <h2>Nearby Providers</h2>
+        </span>
+        Showing {visibleProviders.length} of the {availProviders.length} providers in your area.
         <ul>
-          {availProviders.map((item, index) => {
+          {visibleProviders.map((item, index) => {
             const p = item["properties"];
             const loc = item["geometry"]["coordinates"];
             const text = JSON.stringify(item,' ',2);
+
             return (
               <li key={index}>{Math.round(item.distance)}m, {p["provider"]}, {p["city"]}, {p["state"]+' '}
                 <a href={p["url"]} target="_blank">(Schedule)</a>
