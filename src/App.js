@@ -41,7 +41,7 @@ function App() {
   }, [availProviders, inputs]);
 
   useEffect(() => {
-    // console.log({ inputs });
+    console.log({ inputs });
   }, [inputs]);
 
   const handleInputChange = (event) => {
@@ -96,6 +96,14 @@ function App() {
       });
     }
     return list;
+  }
+
+  function apptCount(p) {
+    let count = '?';
+    if (p["appointments"] && p["appointments"].length>0) {
+      count = p["appointments"].length;
+    }
+    return count;
   }
 
   /** RTabulator callback to save the tabulator instance */
@@ -161,17 +169,18 @@ function App() {
       field: "geometry.coordinates",
       width: 50,
       formatter: (cell, formatterParams, onRendered) => {
-        const loc = cell.getValue();
-        const link = (
-          <a
-            href={`https://www.google.com/maps/dir/${inputs.homeLat},+${inputs.homeLon}/${loc[1]},+${loc[0]}`}
-            target="_blank"
-          >
-            (Map)
-          </a>
-        );
         onRendered(function () {
-          ReactDOM.render(link, cell.getElement());
+          console.log({inputs});
+          const loc = cell.getValue();
+          const link = (
+            <a
+              href={`https://www.google.com/maps/dir/${inputs.homeLat},+${inputs.homeLon}/${loc[1]},+${loc[0]}`}
+              target="_blank"
+            >
+              (Map)
+            </a>
+          );
+            ReactDOM.render(link, cell.getElement());
         });
       },
     },
@@ -306,8 +315,33 @@ function App() {
         </span>
         Showing {visibleProviders.length} of the {availProviders.length}{" "}
         providers in your area.
-        <RTabulator {...options} />
-      </div>
+        {/* <RTabulator {...options} /> */}
+        <ul>
+          {visibleProviders.map((item, index) => {
+            const p = item["properties"];
+            const loc = item["geometry"]["coordinates"];
+            const text = JSON.stringify(item,' ',2);
+
+            return (
+              <li key={index}>{Math.round(item.distance)}m - {p["provider"]}, {p["city"]}, {p["state"]}, {apptCount(p)} openings({vaccineList(p)+'), '}
+                <a href={p["url"]} target="_blank">(Schedule)</a>
+                {' '}
+                <a
+                  href={`https://www.google.com/maps/dir/${inputs.homeLat},+${inputs.homeLon}/${loc[1]},+${loc[0]}`}
+                  target="_blank"
+                >
+                  (Map)
+                </a>
+                {' '}
+                <span title={text}>
+                  <a onClick={selectProvider} href="#ProviderDetails" data-text={text}>
+                    (details)
+                  </a>
+                </span>
+              </li>
+            );
+          })}
+        </ul>      </div>
       <div id="ProviderDetails" className="ProviderDetails">
         <h2>Provider details</h2>
         {providerDetails ? (
