@@ -99,8 +99,8 @@ function App() {
   }
 
   function apptCount(p) {
-    let count = '?';
-    if (p["appointments"] && p["appointments"].length>0) {
+    let count = "?";
+    if (p["appointments"] && p["appointments"].length > 0) {
       count = p["appointments"].length;
     }
     return count;
@@ -111,103 +111,107 @@ function App() {
     setTabulator(t);
   }
 
-  /** Tabulator columns & formatting */
-  const columns = [
-    {
-      title: "distance",
-      field: "distance",
-      sorter: "number",
-      width: 75,
-      formatter: "money",
-      formatterParams: {
-        thousand: ",",
-        symbol: "m",
-        symbolAfter: true,
-        precision: 0,
+  useEffect(() => {
+    /** Tabulator columns & formatting */
+    const columns = [
+      {
+        title: "distance",
+        field: "distance",
+        sorter: "number",
+        width: 75,
+        formatter: "money",
+        formatterParams: {
+          thousand: ",",
+          symbol: "m",
+          symbolAfter: true,
+          precision: 0,
+        },
       },
-    },
-    { title: "provider", field: "properties.provider", width: 100 },
-    { title: "city", field: "properties.city", width: 100 },
-    { title: "state", field: "properties.state", width: 50 },
-    {
-      title: "openings",
-      field: "properties.appointments",
-      width: 80,
-      formatter: (cell, formatterParams, onRendered) => {
-        onRendered(function () {
-          ReactDOM.render(cell.getValue().length || "?", cell.getElement());
-        });
+      { title: "provider", field: "properties.provider", width: 100 },
+      { title: "city", field: "properties.city", width: 100 },
+      { title: "state", field: "properties.state", width: 50 },
+      {
+        title: "openings",
+        field: "properties.appointments",
+        width: 80,
+        formatter: (cell, formatterParams, onRendered) => {
+          onRendered(function () {
+            ReactDOM.render(cell.getValue().length || "?", cell.getElement());
+          });
+        },
       },
-    },
-    {
-      title: "types",
-      field: "properties",
-      width: 120,
-      formatter: (cell, formatterParams, onRendered) => {
-        onRendered(function () {
-          ReactDOM.render(vaccineList(cell.getValue()), cell.getElement());
-        });
+      {
+        title: "types",
+        field: "properties",
+        width: 120,
+        formatter: (cell, formatterParams, onRendered) => {
+          onRendered(function () {
+            ReactDOM.render(vaccineList(cell.getValue()), cell.getElement());
+          });
+        },
       },
-    },
-    {
-      title: "url",
-      field: "properties.url",
-      width: 100,
-      formatter: (cell, formatterParams, onRendered) => {
-        const link = (
-          <a href={cell.getValue()} target="_blank">
-            (Schedule)
-          </a>
-        );
-        onRendered(function () {
-          ReactDOM.render(link, cell.getElement());
-        });
-      },
-    },
-    {
-      title: "map",
-      field: "geometry.coordinates",
-      width: 50,
-      formatter: (cell, formatterParams, onRendered) => {
-        onRendered(function () {
-          console.log({inputs});
-          const loc = cell.getValue();
+      {
+        title: "url",
+        field: "properties.url",
+        width: 100,
+        formatter: (cell, formatterParams, onRendered) => {
           const link = (
-            <a
-              href={`https://www.google.com/maps/dir/${inputs.homeLat},+${inputs.homeLon}/${loc[1]},+${loc[0]}`}
-              target="_blank"
-            >
-              (Map)
+            <a href={cell.getValue()} target="_blank">
+              (Schedule)
             </a>
           );
+          onRendered(function () {
             ReactDOM.render(link, cell.getElement());
-        });
+          });
+        },
       },
-    },
-    {
-      title: "details",
-      field: "properties.address",
-      width: 100,
-      formatter: (cell, formatterParams, onRendered) => {
-        const text = JSON.stringify(cell.getData(), " ", 2);
-        // const text = JSON.stringify(cell.getValue(),' ',2);
-        const link = (
-          <span title={text}>
-            <a
-              onClick={selectProvider}
-              href="#ProviderDetails"
-              data-text={text}
-            >
-              (details)
-            </a>
-          </span>
-        );
-        onRendered(function () {
-          ReactDOM.render(link, cell.getElement());
-        });
+      {
+        title: "map",
+        field: "geometry.coordinates",
+        width: 50,
+        formatter: (cell, formatterParams, onRendered) => {
+          onRendered(function () {
+            const loc = cell.getValue();
+            const link = (
+              <a
+                href={`https://www.google.com/maps/dir/${inputs.homeLat},+${inputs.homeLon}/${loc[1]},+${loc[0]}`}
+                target="_blank"
+              >
+                (Map)
+              </a>
+            );
+            ReactDOM.render(link, cell.getElement());
+          });
+        },
       },
-    },
-  ];
+      {
+        title: "details",
+        field: "properties.address",
+        width: 100,
+        formatter: (cell, formatterParams, onRendered) => {
+          const text = JSON.stringify(cell.getData(), " ", 2);
+          // const text = JSON.stringify(cell.getValue(),' ',2);
+          const link = (
+            <span title={text}>
+              <a
+                onClick={selectProvider}
+                href="#ProviderDetails"
+                data-text={text}
+              >
+                (details)
+              </a>
+            </span>
+          );
+          onRendered(function () {
+            ReactDOM.render(link, cell.getElement());
+          });
+        },
+      },
+    ];
+    if (tabulator) {
+      tabulator.setColumns(columns);
+    }
+  }, [inputs, tabulator]);
 
   /** Tabulator row click handler */
   const rowClick = (e, row) => {
@@ -220,7 +224,7 @@ function App() {
   /** Tabulator table options */
   const options = {
     setTabulatorCB, // Optional prop introduced by RTabulator to save tabulator instance
-    columns,
+    // columns,
     initialSort: [
       { column: "distance", dir: "asc" }, //sort by this first
     ],
@@ -232,6 +236,7 @@ function App() {
     rowClick,
     selectable: 1,
     rowContextMenu: [],
+    reactiveData: true,
     persistentLayout: true,
     persistentSort: true,
     persistenceID: "commentPerststance",
@@ -315,33 +320,8 @@ function App() {
         </span>
         Showing {visibleProviders.length} of the {availProviders.length}{" "}
         providers in your area.
-        {/* <RTabulator {...options} /> */}
-        <ul>
-          {visibleProviders.map((item, index) => {
-            const p = item["properties"];
-            const loc = item["geometry"]["coordinates"];
-            const text = JSON.stringify(item,' ',2);
-
-            return (
-              <li key={index}>{Math.round(item.distance)}m - {p["provider"]}, {p["city"]}, {p["state"]}, {apptCount(p)} openings({vaccineList(p)+'), '}
-                <a href={p["url"]} target="_blank">(Schedule)</a>
-                {' '}
-                <a
-                  href={`https://www.google.com/maps/dir/${inputs.homeLat},+${inputs.homeLon}/${loc[1]},+${loc[0]}`}
-                  target="_blank"
-                >
-                  (Map)
-                </a>
-                {' '}
-                <span title={text}>
-                  <a onClick={selectProvider} href="#ProviderDetails" data-text={text}>
-                    (details)
-                  </a>
-                </span>
-              </li>
-            );
-          })}
-        </ul>      </div>
+        <RTabulator {...options} />
+      </div>
       <div id="ProviderDetails" className="ProviderDetails">
         <h2>Provider details</h2>
         {providerDetails ? (
